@@ -1,0 +1,1 @@
+x=-4:0.1:4; y=x.^2; point=3; rate=0.1; trace=zeros(1,30); for k=1:30; trace(k)=point; point=point-rate*2*point; end; plot(trace,'-o'); title('Gradient descent');
