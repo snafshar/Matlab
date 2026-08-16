@@ -1,0 +1,1 @@
+n=100; temperature=zeros(1,n); temperature(1)=100; for step=1:200; next=temperature; for i=2:n-1; next(i)=(temperature(i-1)+temperature(i+1))/2; end; temperature=next; end; plot(temperature); title('Heat profile');
