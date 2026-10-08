@@ -1,0 +1,16 @@
+% Network packet queue simulation
+clear; clc;
+packets=5000; arrivalRate=0.75; serviceRate=0.9;
+queue=0; delays=zeros(1,packets); dropped=0;
+for k=1:packets
+    arrivals=rand < arrivalRate;
+    if arrivals
+        if queue < 100, queue=queue+1; else, dropped=dropped+1; end
+    end
+    if queue>0 && rand < serviceRate
+        queue=queue-1;
+        delays(k)=queue+1;
+    end
+end
+fprintf('Packets: %d\nDropped: %d\nLoss rate: %.2f%%\n',packets,dropped,100*dropped/packets);
+figure; plot(delays); xlabel('Time step'); ylabel('Queue-derived delay'); title('Network Queue Simulation'); grid on;
