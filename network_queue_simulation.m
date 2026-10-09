@@ -1,5 +1,6 @@
-% Network packet queue simulation
+% Network packet queue simulation with reproducible parameters.
 clear; clc;
+rng(42);
 
 packets = 5000;
 arrivalRate = 0.75;
@@ -10,6 +11,7 @@ queue = 0;
 queueHistory = zeros(1, packets);
 delay = zeros(1, packets);
 dropped = 0;
+served = 0;
 
 for k = 1:packets
     if rand < arrivalRate
@@ -22,15 +24,17 @@ for k = 1:packets
 
     if queue > 0 && rand < serviceRate
         queue = queue - 1;
+        served = served + 1;
         delay(k) = queue + 1;
     end
-
     queueHistory(k) = queue;
 end
 
+lossRate = 100 * dropped / packets;
 fprintf('Packets: %d\n', packets);
+fprintf('Served: %d\n', served);
 fprintf('Dropped: %d\n', dropped);
-fprintf('Loss rate: %.2f%%\n', 100 * dropped / packets);
+fprintf('Loss rate: %.2f%%\n', lossRate);
 fprintf('Maximum queue: %d\n', max(queueHistory));
 
 figure;
