@@ -8,15 +8,9 @@ expected = [2; -1; 3];
 b = A * expected;
 
 % Prefer the backslash operator to explicitly forming inv(A).
-solution = A \ b;
-residual = A * solution - b;
-solution_error = solution - expected;
-
-residual_norm = norm(residual, 2);
-rhs_norm = norm(b, 2);
-relative_residual = residual_norm / max(rhs_norm, eps);
-solution_error_norm = norm(solution_error, 2);
-condition_number = cond(A);
+[solution, residual_norm, relative_residual, condition_number] = ...
+    solve_linear_system(A, b);
+solution_error_norm = norm(solution - expected, 2);
 
 fprintf('Computed solution:\n');
 disp(solution);
