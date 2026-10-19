@@ -1,32 +1,40 @@
-# Linear Systems Lab (MATLAB)
+# Linear Systems Lab (MATLAB / GNU Octave)
 
-This lab solves a small system (Ax=b) and compares residual, relative residual, solution error, and matrix conditioning.
+This lab solves a linear system (Ax=b) and reports residual and conditioning diagnostics. The solver is factored into a reusable function so it can be tested independently of the demo.
 
-## Run
+## Run the demo
 
-Open MATLAB in this folder and run:
+In MATLAB or GNU Octave, change to this directory and run:
 
 ```matlab
 linear_systems_demo
 ```
 
-The script uses MATLAB's backslash operator, computes (r=Ax-b), and prints:
+The demo uses `solve_linear_system(A,b)`, which returns the solution, residual norm, relative residual, and 2-norm condition number.
 
-- the computed solution;
-- the residual norm (|Ax-b|_2);
-- the relative residual;
-- the error against a known solution;
-- the matrix 2-norm condition number.
+## Run regression tests
 
-## Why use backslash?
+In MATLAB:
 
-For solving a linear system, `A \\ b` is generally preferable to explicitly calculating `inv(A)*b`. It lets MATLAB select a suitable numerical method without forming the inverse.
+```matlab
+test_linear_systems
+```
 
-## Questions
+In GNU Octave:
 
-1. Why can the residual be small while the solution error is comparatively large?
-2. Increase the condition number of (A) and observe the diagnostics.
-3. Perturb one element of (b) slightly. How much does the solution change?
-4. Modify the example so that (b) is supplied independently rather than built from a known solution.
+```bash
+octave --no-gui --quiet --eval "test_linear_systems();"
+```
 
-A small residual measures how well the computed solution satisfies the supplied equations. It does not, by itself, guarantee a small forward error; conditioning also matters.
+The tests check the known solution, small residuals, condition-number output, and rejection of invalid matrix dimensions. GitHub Actions installs GNU Octave and runs both the tests and demo when these project files change.
+
+## Interpretation
+
+For solving a linear system, `A \\ b` is generally preferable to explicitly calculating `inv(A)*b`. A small residual measures how well the computed answer satisfies the supplied equations, but it does not by itself guarantee a small forward error; matrix conditioning also matters.
+
+## Exercises
+
+1. Perturb one element of (b) and measure the change in the solution.
+2. Compare a well-conditioned matrix with a nearly singular one.
+3. Add a test for a row-vector right-hand side and confirm it is accepted.
+4. Add a test for a nonnumeric input and define a clear error message.
