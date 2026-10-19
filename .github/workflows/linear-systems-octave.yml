@@ -1,0 +1,32 @@
+name: Linear Systems CI (GNU Octave)
+
+on:
+  push:
+    paths:
+      - "projects/2026-10-16/linear-systems/**"
+      - ".github/workflows/linear-systems-octave.yml"
+  pull_request:
+    paths:
+      - "projects/2026-10-16/linear-systems/**"
+      - ".github/workflows/linear-systems-octave.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install GNU Octave
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes octave
+      - name: Run regression tests
+        working-directory: projects/2026-10-16/linear-systems
+        run: octave --no-gui --quiet --eval "test_linear_systems();"
+      - name: Run demo
+        working-directory: projects/2026-10-16/linear-systems
+        run: octave --no-gui --quiet --eval "linear_systems_demo;"
