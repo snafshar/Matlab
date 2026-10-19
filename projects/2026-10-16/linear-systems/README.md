@@ -1,6 +1,6 @@
 # Linear Systems Lab (MATLAB)
 
-This lab compares a direct linear-system solve with a residual-based accuracy check.
+This lab solves a small system (Ax=b) and compares residual, relative residual, solution error, and matrix conditioning.
 
 ## Run
 
@@ -10,10 +10,23 @@ Open MATLAB in this folder and run:
 linear_systems_demo
 ```
 
-The script solves (Ax=b) using MATLAB's backslash operator, computes the residual (r=Ax-b), and prints the residual norm. The example also compares the solution against a known vector.
+The script uses MATLAB's backslash operator, computes (r=Ax-b), and prints:
+
+- the computed solution;
+- the residual norm (|Ax-b|_2);
+- the relative residual;
+- the error against a known solution;
+- the matrix 2-norm condition number.
+
+## Why use backslash?
+
+For solving a linear system, `A \\ b` is generally preferable to explicitly calculating `inv(A)*b`. It lets MATLAB select a suitable numerical method without forming the inverse.
 
 ## Questions
 
-1. Why is `A \\ b` generally preferable to `inv(A)*b`?
-2. What does a small residual tell you, and what does it not guarantee for an ill-conditioned matrix?
-3. Change the matrix and observe how the residual and solution error change.
+1. Why can the residual be small while the solution error is comparatively large?
+2. Increase the condition number of (A) and observe the diagnostics.
+3. Perturb one element of (b) slightly. How much does the solution change?
+4. Modify the example so that (b) is supplied independently rather than built from a known solution.
+
+A small residual measures how well the computed solution satisfies the supplied equations. It does not, by itself, guarantee a small forward error; conditioning also matters.
